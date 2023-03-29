@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   },
 });
 
-exports.upload = multer({ dest: storage , debug:true  }).array("images", 10);
+const upload = multer({ storage: storage , debug:true  }).array("images", 10);
 
 exports.products = async (req, res) => {
   try {
@@ -60,16 +60,6 @@ exports.deleteProduct = async (req, res) => {
 
 
 
-// Admin Panel //
 
-exports.login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const admin = await adminModel.find({ email: email, password: password });
-    res.status(200).json({ status: true, message: "success request" });
-  } catch (er) {
-    res.status(400).json({ status: false, message: er.message });
-  }
-};
 
 
