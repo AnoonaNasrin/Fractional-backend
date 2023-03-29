@@ -9,8 +9,9 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type: {
+  ownershipType: {
     type: String,
+    enum:['fractional-ownership','full-ownership'],
     required: true,
   },
   email: {
@@ -21,6 +22,10 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  location:{
+    type:String,
+    enum:['Alibaug', 'Goa', 'Nilgiris']
+  }
 });
 
 module.exports = mongoose.model("customer", customerSchema);
