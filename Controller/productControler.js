@@ -1,7 +1,6 @@
-const productModel = require("../Model/propertyModel");
-const multer = require("multer");
 const propertyModel = require("../Model/propertyModel");
 const adminModel = require("../Model/adminModel");
+const multer = require("multer");
 
 // Add product //
 
@@ -10,11 +9,11 @@ const storage = multer.diskStorage({
     cb(null, "public/images");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    cb(null, file.originalname);
   },
 });
 
-exports.upload = multer({ storage: storage }).array("images", 5);
+exports.upload = multer({ dest: storage , debug:true  }).array("images", 10);
 
 exports.products = async (req, res) => {
   try {
@@ -25,7 +24,7 @@ exports.products = async (req, res) => {
       const images = req.files.map((file) => file.filename);
       const productUpload = await propertyModel.create({
         ...req.body,
-        images: images,
+        image: images,
       });
       res.status(201).json({ status: true, message: "product added" });
     });
@@ -38,7 +37,7 @@ exports.products = async (req, res) => {
 
 exports.getAllProduct = async (req, res) => {
   try {
-    const products = await productModel.find().lean();
+    const products = await propertyModel.find().lean();
     res
       .status(200)
       .json({ status: true, message: "success", products: products });
@@ -52,12 +51,15 @@ exports.getAllProduct = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
-    await productModel.findByIdAndDelete(productId);
+    await propertyModel.findByIdAndDelete(productId);
     res.status(200).json({ status: true, message: "Deleted" });
   } catch (er) {
     res.status(400).json({ status: false, message: er.message });
   }
 };
+
+
+
 // Admin Panel //
 
 exports.login = async (req, res) => {
@@ -69,3 +71,5 @@ exports.login = async (req, res) => {
     res.status(400).json({ status: false, message: er.message });
   }
 };
+
+

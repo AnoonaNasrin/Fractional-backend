@@ -1,8 +1,7 @@
-const { default: mongoose } = require("mongoose");
-const mongoode = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose");
 
-const adminSchema = new Schema({
+
+const adminSchema = new  mongoose.Schema({
   email: {
     type: String,
     required: true,
